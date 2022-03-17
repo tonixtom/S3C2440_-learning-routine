@@ -1,12 +1,12 @@
 #ifndef __DEF_H__
 #define __DEF_H__
 
-#define U32 unsigned int
-#define U16 unsigned short
-#define S32 int
-#define S16 short int
-#define U8  unsigned char
-#define	S8  char
+#define uint32_t unsigned int
+#define uint16_t unsigned short
+#define int32_t int
+#define int16_t short int
+#define uint8_t  unsigned char
+#define	int8_t  char
 
 typedef unsigned char BOOL;
 typedef unsigned char UCHAR;
@@ -28,8 +28,8 @@ typedef void *PVOID;
 #define	BYTE	char
 #define	WORD 	short
 #define	DWORD	int
-#define	UINT	U32
-#define	LPSTR	U8 *		
+#define	UINT	uint32_t
+#define	LPSTR	uint8_t *		
 
 #define TRUE 	1   
 #define FALSE 	0

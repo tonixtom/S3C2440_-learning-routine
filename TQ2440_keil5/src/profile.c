@@ -23,7 +23,7 @@ void __irq IsrWatchdog(void);
 void Timer_InitEx(void)
 {
 	intCount=0;	
-	pISR_WDT_AC97=(U32)IsrWatchdog;
+	pISR_WDT_AC97=(uint32_t)IsrWatchdog;
 	ClearPending(BIT_WDT_AC97);
 	rSUBSRCPND=BIT_SUB_WDT;
 	rINTMSK&=~(BIT_WDT_AC97);

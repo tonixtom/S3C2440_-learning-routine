@@ -29,9 +29,9 @@ void RTC_Time_Set( void )
 //==================================================================================
 void RTC_Display(void) 
 {
-	U16 year ;
-	U8 month, day ;		// week
-	U8 hour, minute, second ;
+	uint16_t year ;
+	uint8_t month, day ;		// week
+	uint8_t hour, minute, second ;
 
 	RTC_Time_Set() ;
 	   

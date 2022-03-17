@@ -13,10 +13,10 @@
 
 //use variable
 #ifdef GLOBAL_CLK
-	U32 FCLK;
-	U32 HCLK;
-	U32 PCLK;
-	U32 UCLK;
+	uint32_t FCLK;
+	uint32_t HCLK;
+	uint32_t PCLK;
+	uint32_t UCLK;
 #else
 	extern unsigned int FCLK;
 	extern unsigned int HCLK;

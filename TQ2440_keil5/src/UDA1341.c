@@ -6,8 +6,8 @@
 
 #define	BUF_SIZE	(16*1024)
 
-extern U32 downloadAddress;
-extern U32 downloadFileSize;
+extern uint32_t downloadAddress;
+extern uint32_t downloadFileSize;
 
 void PlayMusicTest(void)
 {
@@ -15,9 +15,9 @@ void PlayMusicTest(void)
 	WAVEFORMATEX fmt;
 	WAVEHDR hdr[2048];
 	HWAVEOUT hwo;	
-	U8 pause = 0;
-	U8 mute = 0;	
-	U32 volume;
+	uint8_t pause = 0;
+	uint8_t mute = 0;	
+	uint32_t volume;
 	unsigned char *buf;
 
 	downloadAddress = _NONCACHE_STARTADDRESS;
@@ -25,7 +25,7 @@ void PlayMusicTest(void)
 	for( i = 0; i < 243552; i++ )  buf[i] = WindowsXP_Wav[i] ;
 	downloadFileSize = 243552 ;
 
-	size = *(U32 *)(downloadAddress+0x28);
+	size = *(uint32_t *)(downloadAddress+0x28);
 	i = 0;							
 	
 	while(size>0)
@@ -37,13 +37,13 @@ void PlayMusicTest(void)
 	}
 	
 	fmt.wFormatTag		= WAVE_FORMAT_PCM;
-	fmt.nChannels		= *(U16 *)(downloadAddress+0x16);
-	fmt.nSamplesPerSec	= *(U32 *)(downloadAddress+0x18);
-	fmt.nAvgBytesPerSec	= *(U32 *)(downloadAddress+0x1c);
-	fmt.nBlockAlign		= *(U16 *)(downloadAddress+0x20);
-	fmt.wBitsPerSample	= *(U16 *)(downloadAddress+0x22);
+	fmt.nChannels		= *(uint16_t *)(downloadAddress+0x16);
+	fmt.nSamplesPerSec	= *(uint32_t *)(downloadAddress+0x18);
+	fmt.nAvgBytesPerSec	= *(uint32_t *)(downloadAddress+0x1c);
+	fmt.nBlockAlign		= *(uint16_t *)(downloadAddress+0x20);
+	fmt.wBitsPerSample	= *(uint16_t *)(downloadAddress+0x22);
 	Uart_Printf("\nSample Rate = %d, Channels = %d, %dBitsPerSample, size = %d\n",
-			fmt.nSamplesPerSec, fmt.nChannels, fmt.wBitsPerSample, *(U32 *)(downloadAddress+0x28));
+			fmt.nSamplesPerSec, fmt.nChannels, fmt.wBitsPerSample, *(uint32_t *)(downloadAddress+0x28));
 	
 	hwo = 0;
 	err = waveOutOpen(&hwo,
@@ -62,7 +62,7 @@ void PlayMusicTest(void)
 	waveOutGetVolume(0,	&volume);
 	while(1)
 	{
-		U8 key = Uart_Getch();
+		uint8_t key = Uart_Getch();
 		if( key == ESC_KEY )
 			break;
 		if(key=='p')
@@ -124,13 +124,13 @@ void RecordTest(void)
 		i++;
 	}	
 	
-	*(U16 *)(downloadAddress+0x14) = fmt.wFormatTag;
-	*(U16 *)(downloadAddress+0x16) = fmt.nChannels;
-	*(U32 *)(downloadAddress+0x18) = fmt.nSamplesPerSec;
-	*(U32 *)(downloadAddress+0x1c) = fmt.nAvgBytesPerSec;
-	*(U16 *)(downloadAddress+0x20) = fmt.nBlockAlign;
-	*(U16 *)(downloadAddress+0x22) = fmt.wBitsPerSample;
-	*(U32 *)(downloadAddress+0x28) = downloadFileSize;
+	*(uint16_t *)(downloadAddress+0x14) = fmt.wFormatTag;
+	*(uint16_t *)(downloadAddress+0x16) = fmt.nChannels;
+	*(uint32_t *)(downloadAddress+0x18) = fmt.nSamplesPerSec;
+	*(uint32_t *)(downloadAddress+0x1c) = fmt.nAvgBytesPerSec;
+	*(uint16_t *)(downloadAddress+0x20) = fmt.nBlockAlign;
+	*(uint16_t *)(downloadAddress+0x22) = fmt.wBitsPerSample;
+	*(uint32_t *)(downloadAddress+0x28) = downloadFileSize;
 	
 	err = waveInOpen(&hwi,
 				0,
@@ -153,7 +153,7 @@ void RecordTest(void)
 	
 	while(1)
 	{
-		U8 key;
+		uint8_t key;
 		
 		key = Uart_GetKey();
 		if( key == ESC_KEY )

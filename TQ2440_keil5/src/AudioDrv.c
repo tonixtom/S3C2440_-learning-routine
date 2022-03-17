@@ -19,27 +19,27 @@
 #define	REC_DMA_MODE	(HANDSHAKE_MODE|SYNC_APB|DONE_GEN_INT|TSZ_UNIT|SINGLE_SVC|HW_TRIG|RELOAD_OFF|DSZ_16b)
 
 static void IIS_PortSetting(void);
-static void _WrL3Addr(U8 data);
-static void _WrL3Data(U8 data,int halt);
+static void _WrL3Addr(uint8_t data);
+static void _WrL3Data(uint8_t data,int halt);
 static void Init1341(char mode);
-static void AdjVolume(U16 volume);
-static void PlayPause(U8 mode);
+static void AdjVolume(uint16_t volume);
+static void PlayPause(uint8_t mode);
 static void StartPlay(void);
 static void __irq PlayDMA2Done(void);
 
 static LPWAVEHDR lpPlayFstBlk, lpRecFstBlk;
 static LPWAVEHDR lpPlayLstBlk, lpRecLstBlk;
 static LPWAVEHDR lpPlayCurBlk, lpRecCurBlk;
-static U32 PlayTotBlks, RecTotBlks;
+static uint32_t PlayTotBlks, RecTotBlks;
 
-static U32 save_MPLLCON;
+static uint32_t save_MPLLCON;
 
 static struct
 {
-	U16 Freq;
-	U32 MPLL;
-	U16 PreScaler;
-	U8	ofs;
+	uint16_t Freq;
+	uint32_t MPLL;
+	uint16_t PreScaler;
+	uint8_t	ofs;
 }CodecPara[7] = {{8000,(123<<12)|(6<<4)|0,(23<<5)|23,0},
 				{11025,(229<<12)|(5<<4)|1,(11<<5)|11,1},
 				{16000,(123<<12)|(6<<4)|0,(11<<5)|11,0},
@@ -51,27 +51,27 @@ static struct
 static struct
 {
 	HWAVEOUT handle;		
-	U16 wFormatTag;
-	U16 nChannels;	
-	U16 wBitsPerSample;
+	uint16_t wFormatTag;
+	uint16_t nChannels;	
+	uint16_t wBitsPerSample;
 	CallBackProc CallBack;
-	U32 CallBackInst;	
-	U8 FsIdx;
-	U32 DevReq;	
-	U8 Status;	
+	uint32_t CallBackInst;	
+	uint8_t FsIdx;
+	uint32_t DevReq;	
+	uint8_t Status;	
 }PlayStatus, RecStatus; 						   	
 
-static U16 PlayVolume = 0xffff;
+static uint16_t PlayVolume = 0xffff;
 
 void DbgChgUartDiv(void)
 {
 	Uart_Init(0, 115200);        		
 }
 
-static void SetSysFclk( U32 MPLL )
+static void SetSysFclk( uint32_t MPLL )
 {
-	U32 mdiv, pdiv, sdiv, val;
-    U32 mclk;
+	uint32_t mdiv, pdiv, sdiv, val;
+    uint32_t mclk;
 
     mdiv = (MPLL>>12)&0xff;
     pdiv = (MPLL>>4)&0xff;
@@ -97,8 +97,8 @@ MMRESULT waveOutOpen(
 	DWORD fdwOpen
 )
 {
-	U8 i;
-	U8 err = 0;	
+	uint8_t i;
+	uint8_t err = 0;	
 	
 	if(pwfx->wFormatTag!=WAVE_FORMAT_PCM)	//only support PCM
 		err = 1;
@@ -140,7 +140,7 @@ MMRESULT waveOutOpen(
 	DbgChgUartDiv();		
 	
 	IIS_PortSetting();	    
-	pISR_DMA2 = (U32)PlayDMA2Done;
+	pISR_DMA2 = (uint32_t)PlayDMA2Done;
 	EnableIrq(BIT_DMA2);
 	PlayTotBlks = 0;
 	Init1341(PLAY);
@@ -257,7 +257,7 @@ MMRESULT waveOutReset (HWAVEOUT hwo)
 //==========================================================
 static __inline void SetPlayDma(void)
 {
-	SetDMARun(PlayStatus.DevReq|DMA_START, (U32)lpPlayCurBlk->lpData, (U32)IISFIFO, lpPlayCurBlk->dwBufferLength/2);
+	SetDMARun(PlayStatus.DevReq|DMA_START, (uint32_t)lpPlayCurBlk->lpData, (uint32_t)IISFIFO, lpPlayCurBlk->dwBufferLength/2);
 }
 
 static void StartPlay(void)
@@ -290,7 +290,7 @@ static void __irq PlayDMA2Done(void)
 /************************* Record Function *********************/
 static __inline void SetRecDma(void)
 {
-	SetDMARun(RecStatus.DevReq|DMA_START, (U32)IISFIFO, (U32)lpRecCurBlk->lpData, lpRecCurBlk->dwBufferLength/2);
+	SetDMARun(RecStatus.DevReq|DMA_START, (uint32_t)IISFIFO, (uint32_t)lpRecCurBlk->lpData, lpRecCurBlk->dwBufferLength/2);
 }
 
 static void __irq RecDMADone(void)
@@ -322,8 +322,8 @@ MMRESULT waveInOpen(
 	DWORD fdwOpen
 )
 {
-	U8 i;
-	U8 err = 0;	
+	uint8_t i;
+	uint8_t err = 0;	
 	
 	if(pwfx->wFormatTag!=WAVE_FORMAT_PCM)			//only support PCM
 		err = 1;
@@ -371,12 +371,12 @@ MMRESULT waveInOpen(
 	IIS_PortSetting();		
 	if((RecStatus.DevReq&0xff)==0x12)
 	{
-		pISR_DMA1 = (U32)RecDMADone;
+		pISR_DMA1 = (uint32_t)RecDMADone;
 		EnableIrq(BIT_DMA1);
 	}
 	if((RecStatus.DevReq&0xff)==0x21)		    
 	{
-		pISR_DMA2 = (U32)RecDMADone;
+		pISR_DMA2 = (uint32_t)RecDMADone;
 		EnableIrq(BIT_DMA2);
 	}
 		
@@ -513,9 +513,9 @@ static void IIS_PortSetting(void)
 #define L3D (1<<3)              //GPB3 = L3DATA
 #define L3M (1<<2)              //GPB2 = L3MODE
 
-static void _WrL3Addr(U8 data)
+static void _WrL3Addr(uint8_t data)
 {       
-	S32 i,j;
+	int32_t i,j;
 
 	rGPBDAT  = rGPBDAT & ~(L3D | L3M | L3C) | L3C;      //L3D=L, L3M=L(in address mode), L3C=H
 
@@ -548,9 +548,9 @@ static void _WrL3Addr(U8 data)
 }
 
 //==========================================================
-static void _WrL3Data(U8 data,int halt)
+static void _WrL3Data(uint8_t data,int halt)
 {
-	S32 i,j;
+	int32_t i,j;
 
 	if(halt)
 	{
@@ -589,7 +589,7 @@ static void _WrL3Data(U8 data,int halt)
 //==========================================================
 static void Init1341(char mode)
 {
-	U16 FsIdx;
+	uint16_t FsIdx;
 //Port Initialize
 //----------------------------------------------------------
 //   PORT B GROUP
@@ -658,7 +658,7 @@ static void Init1341(char mode)
 }
 
 //==========================================================
-static void PlayPause(U8 mode)
+static void PlayPause(uint8_t mode)
 {
 	if(mode) 
 		rIISCON &= ~1;		//stop iis
@@ -667,7 +667,7 @@ static void PlayPause(U8 mode)
 }
 
 #define	MAX_VOLUME	61
-static void AdjVolume(U16 volume)	
+static void AdjVolume(uint16_t volume)	
 {	
 	rGPBDAT = rGPBDAT & ~(L3M|L3C|L3D) |(L3M|L3C); //Start condition : L3M=H, L3C=H
 	rGPBUP  = rGPBUP  & ~(0x7<<2) |(0x7<<2);       //The pull up function is disabled GPB[4:2] 1 1100    

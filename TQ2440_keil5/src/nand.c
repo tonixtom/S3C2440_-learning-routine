@@ -57,9 +57,9 @@ static char rNF_ReadID()
 	return (pDID);
 }
 
-static void rSB_ReadPage(U32 addr, unsigned char * to)
+static void rSB_ReadPage(uint32_t addr, unsigned char * to)
 {
-	U32 i;
+	uint32_t i;
 
 	rNF_Reset();
 
@@ -88,9 +88,9 @@ static void rSB_ReadPage(U32 addr, unsigned char * to)
 
 }
 
-static void rLB_ReadPage(U32 addr, unsigned char * to)
+static void rLB_ReadPage(uint32_t addr, unsigned char * to)
 {
-	U32 i;
+	uint32_t i;
 
 	rNF_Reset();
 
@@ -124,10 +124,10 @@ static void rLB_ReadPage(U32 addr, unsigned char * to)
 
 void RdNF2SDRAM( )
 {
-	U32 i;
-	U32 start_addr = 0x0;
+	uint32_t i;
+	uint32_t start_addr = 0x0;
 	unsigned char * to = (unsigned char *)0x30000000;
-	U32 size = 0x100000;
+	uint32_t size = 0x100000;
 	rNF_Init();
 	switch(rNF_ReadID())
 	{

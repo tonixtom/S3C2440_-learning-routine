@@ -62,19 +62,19 @@
 #define	REQUEST_DMA_FAIL	0x1000
 
 /*
-U32 RequestDMAChannel(U16 ch, U16 DevID);
-U32 QueryDMAChannel(U16 ch);
-void ReleaseDMAChannel(U16 ch);
+uint32_t RequestDMAChannel(uint16_t ch, uint16_t DevID);
+uint32_t QueryDMAChannel(uint16_t ch);
+void ReleaseDMAChannel(uint16_t ch);
 */
 
-U32 RequestDMASW(U32 attr, U32 mode);
-U32 RequestDMA(U32 attr, U32 mode);
-U16 ReleaseDMA(U32 attr);
-U16 StartDMA(U32 attr);
-U16 StopDMA(U32 attr);
-U16 SetDMARun(U32 attr, U32 src_addr, U32 dst_addr, U32 len);
-U32 QueryDMAStat(U32 attr);
-U32 QueryDMASrc(U32 attr);
-U32 QueryDMADst(U32 attr);
+uint32_t RequestDMASW(uint32_t attr, uint32_t mode);
+uint32_t RequestDMA(uint32_t attr, uint32_t mode);
+uint16_t ReleaseDMA(uint32_t attr);
+uint16_t StartDMA(uint32_t attr);
+uint16_t StopDMA(uint32_t attr);
+uint16_t SetDMARun(uint32_t attr, uint32_t src_addr, uint32_t dst_addr, uint32_t len);
+uint32_t QueryDMAStat(uint32_t attr);
+uint32_t QueryDMASrc(uint32_t attr);
+uint32_t QueryDMADst(uint32_t attr);
 
 #endif	/* DMA_ADMIN_H	*/

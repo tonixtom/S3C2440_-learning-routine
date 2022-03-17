@@ -42,13 +42,13 @@
 #endif
 
 
-static U8 _CAMiicData[CAMIICBUFSIZE];
+static uint8_t _CAMiicData[CAMIICBUFSIZE];
 static volatile int _CAMiicDataCount;
 static volatile int _CAMiicStatus;
 static volatile int _CAMiicMode;
 static int _CAMiicPt;
 
-volatile U32 save_GPECON;
+volatile uint32_t save_GPECON;
 
 
 void * func_cammodule_test[][2]=
@@ -109,11 +109,11 @@ void IicPortReturn(void)
 	rGPECON = save_GPECON;
 }
 
-void Wr_CamIIC(U32 slvAddr, U32 addr, U8 data)
+void Wr_CamIIC(uint32_t slvAddr, uint32_t addr, uint8_t data)
 {
 	_CAMiicMode      = CAMWRDATA;
 	_CAMiicPt        = 0;
-	_CAMiicData[0]   = (U8)addr;
+	_CAMiicData[0]   = (uint8_t)addr;
 	_CAMiicData[1]   = data;
 	_CAMiicDataCount = 2;
     
@@ -124,13 +124,13 @@ void Wr_CamIIC(U32 slvAddr, U32 addr, U8 data)
 	while(_CAMiicDataCount!=-1);
 }
 
-void Rd_CamIIC(U32 slvAddr,U32 addr,U8 *data)
+void Rd_CamIIC(uint32_t slvAddr,uint32_t addr,uint8_t *data)
 {
 
 	/*IIC Slave Addr Write + IIC Reg Addr Write */	
 	_CAMiicMode      = CAMSETRDADDR;
 	_CAMiicPt        = 0;
-	_CAMiicData[0]   = (U8)addr;
+	_CAMiicData[0]   = (uint8_t)addr;
 	_CAMiicDataCount = 1;
 
 	rIICDS   = slvAddr;
@@ -155,7 +155,7 @@ void Rd_CamIIC(U32 slvAddr,U32 addr,U8 *data)
 
 void __irq Cam_IICInt(void)
 {
-	U32 iicSt,i;
+	uint32_t iicSt,i;
 
 	ClearPending(BIT_IIC);
 	iicSt   = rIICSTAT; 
@@ -223,35 +223,35 @@ void Camera_WriteByte(void)
       	
 #if (USED_CAM_TYPE==CAM_S5X532)||(USED_CAM_TYPE==CAM_S5X3A1)
 	Uart_Printf("Input Write Page No of %s\n=>", CAM_NAME);
-	pageNo = (U8)Uart_GetIntNum();
+	pageNo = (uint8_t)Uart_GetIntNum();
 #endif
 
 	Uart_Printf("Input Write Register Address of %s\n=>", CAM_NAME);
-	RegAddr = (U8)Uart_GetIntNum();
+	RegAddr = (uint8_t)Uart_GetIntNum();
     
 	Uart_Printf("Input Write Transfer Data into %s\n=>", CAM_NAME);
-	RegData = (U8)Uart_GetIntNum();
+	RegData = (uint8_t)Uart_GetIntNum();
 
 #if (USED_CAM_TYPE==CAM_S5X532)||(USED_CAM_TYPE==CAM_S5X3A1)
-	Wr_CamIIC(CAM_ID, (U8)0xec, pageNo);  // set Page no
+	Wr_CamIIC(CAM_ID, (uint8_t)0xec, pageNo);  // set Page no
 #endif
-	Wr_CamIIC(CAM_ID, (U8)RegAddr, RegData); // set register after setting page number
+	Wr_CamIIC(CAM_ID, (uint8_t)RegAddr, RegData); // set register after setting page number
 }
 
 
 void Camera_ReadByte(void)
 {
 	unsigned int RegAddr;
-	static U8 rdata[8];
+	static uint8_t rdata[8];
       	
 #if (USED_CAM_TYPE==CAM_S5X532)||(USED_CAM_TYPE==CAM_S5X3A1)
 	Uart_Printf("Input Write Page No of %s\n=>", CAM_NAME);
-	pageNo = (U8)Uart_GetIntNum();
-	Wr_CamIIC(CAM_ID, (U8)0xec, pageNo);  // set Page no
+	pageNo = (uint8_t)Uart_GetIntNum();
+	Wr_CamIIC(CAM_ID, (uint8_t)0xec, pageNo);  // set Page no
 #endif
 
 	Uart_Printf("Input Read Register Address of %s\n=>", CAM_NAME);
-	RegAddr = (U8)Uart_GetIntNum();
+	RegAddr = (uint8_t)Uart_GetIntNum();
 	Rd_CamIIC(CAM_ID, RegAddr, &rdata[0]); 
 	Uart_Printf("Register Addr: 0x%2x, data: 0x%2x\n", RegAddr,rdata[0]);
 }
@@ -282,7 +282,7 @@ void Camera_WriteBlock(void)
 void Camera_ReadBlock(void)
 {
 	unsigned int i;
-	static U8 rdata[256]; 
+	static uint8_t rdata[256]; 
 
 #if USED_CAM_TYPE==CAM_OV9650
 	for(i=0; i<(sizeof(OV9650_YCbCr8bit)/2);i++)

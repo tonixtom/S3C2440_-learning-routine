@@ -43,7 +43,7 @@ void Test_Touchpanel(void)
 
 void __irq AdcTsAuto(void)
 {
-	U32 saveAdcdly;
+	uint32_t saveAdcdly;
 
 	if(rADCDAT0&0x8000)
 	{

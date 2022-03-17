@@ -17,8 +17,8 @@
 ********************************************************/
 volatile int iSD_MMC_RCA;
 sSD_struct SDCard;
-U8 cTxBuffer[SDCARD_BUFF_SIZE];
-U8 cRxBuffer[SDCARD_BUFF_SIZE];
+uint8_t cTxBuffer[SDCARD_BUFF_SIZE];
+uint8_t cRxBuffer[SDCARD_BUFF_SIZE];
 
 /********************************************************
 	TEST API
@@ -26,7 +26,7 @@ U8 cRxBuffer[SDCARD_BUFF_SIZE];
 #ifdef __SD_MMC_DEBUG__
 void Test_SDI(void)
 {
-	U16 i;
+	uint16_t i;
 	
 	if(SDinit())
 	{
@@ -42,7 +42,7 @@ void Test_SDI(void)
 		return;
 	}
 	
-//	if(Read_One_Block(8192*2,(U32 *)cRxBuffer))
+//	if(Read_One_Block(8192*2,(uint32_t *)cRxBuffer))
 //	{
 //		for(i=0;i<512;)
 //		{
@@ -67,7 +67,7 @@ void Test_SDI(void)
 //		cRxBuffer[i] = 0xff;
 //	}
 	
-//	if(Write_One_Block(4096,(U32 *)cRxBuffer))
+//	if(Write_One_Block(4096,(uint32_t *)cRxBuffer))
 //	{
 //		Uart_Printf("\nWrite 4096 Block is OK!\n");
 //	}
@@ -81,7 +81,7 @@ void Test_SDI(void)
 		cRxBuffer[i] = 0x00;
 	}
 	
-	if(Read_One_Block(4096,(U32 *)cRxBuffer))
+	if(Read_One_Block(4096,(uint32_t *)cRxBuffer))
 	{
 		for(i=0;i<512;)
 		{
@@ -184,7 +184,7 @@ void CMD0(void)
 出口：=1:MMC卡 =0:非MMC卡
 说明：无
 **********************************************/
-U8 CMD1(void)
+uint8_t CMD1(void)
 {
 	rSDICARG = 0xff8000;					//(SD OCR:2.7V~3.6V)
 	rSDICCON = (0x1<<9)|(0x1<<8)|0x41; 		//sht_resp, wait_resp, start, 
@@ -210,7 +210,7 @@ U8 CMD1(void)
 		=0：无效卡
 说明：无
 **********************************************/
-U8 CMD8(void)	
+uint8_t CMD8(void)	
 {
 	rSDICARG = 0x000001AA;
 	rSDICCON = (0x1<<9)|(0x1<<8)|0x48;	//sht_resp, wait_resp, start
@@ -232,7 +232,7 @@ U8 CMD8(void)
 出口：=0：成功 =1：失败
 说明：无
 **********************************************/
-U8 CMD55(U16 iRCA)	
+uint8_t CMD55(uint16_t iRCA)	
 {
 	rSDICARG = iRCA<<16;
 	rSDICCON = (0x1<<9)|(0x1<<8)|0x77;	//sht_resp, wait_resp, start
@@ -251,9 +251,9 @@ U8 CMD55(U16 iRCA)
 	  =2SDHC V2.0
 说明：无
 **********************************************/
-U8 ACMD41(U16 iRCA)	
+uint8_t ACMD41(uint16_t iRCA)	
 {
-	U8 cReturn;
+	uint8_t cReturn;
 	
 	if(!CMD55(iRCA))			
 		return 0;
@@ -284,7 +284,7 @@ U8 ACMD41(U16 iRCA)
 出口：=0失败 =1成功
 说明：无
 **********************************************/
-U8 CMD2(U8 *cCID_Info)	
+uint8_t CMD2(uint8_t *cCID_Info)	
 {
 	rSDICARG = 0x0;
 	rSDICCON = (0x1<<10)|(0x1<<9)|(0x1<<8)|0x42; //lng_resp, wait_resp, start
@@ -318,7 +318,7 @@ U8 CMD2(U8 *cCID_Info)
 出口：=0 失败 =1 成功
 说明：无
 **********************************************/
-U8 CMD3(U16 iCardType,U16 *iRCA)	
+uint8_t CMD3(uint16_t iCardType,uint16_t *iRCA)	
 {
 	rSDICARG = iCardType<<16;	    	// (MMC:Set RCA, SD:Ask RCA-->SBZ)
 	rSDICCON = (0x1<<9)|(0x1<<8)|0x43;	// sht_resp, wait_resp, start
@@ -348,7 +348,7 @@ U8 CMD3(U16 iCardType,U16 *iRCA)
 出口：无
 说明：无
 **********************************************/
-U8 CMD7(U8 cSorD,U16 iRCA)	
+uint8_t CMD7(uint8_t cSorD,uint16_t iRCA)	
 {
 	if(cSorD)
 	{
@@ -383,7 +383,7 @@ U8 CMD7(U8 cSorD,U16 iRCA)
 出口：卡状态非0值
 说明：无
 **********************************************/
-U16 CMD13(U16 iRCA)	
+uint16_t CMD13(uint16_t iRCA)	
 {
 	rSDICARG = iRCA<<16;				// (RCA,stuff bit)
 	rSDICCON = (0x1<<9)|(0x1<<8)|0x4d;	// sht_resp, wait_resp, start
@@ -402,7 +402,7 @@ U16 CMD13(U16 iRCA)
 出口：=0：失败 =1：成功
 说明：无
 **********************************************/
-U8 ACMD6(U8 BusWidth,U16 iRCA)	
+uint8_t ACMD6(uint8_t BusWidth,uint16_t iRCA)	
 {
 	if(!CMD55(iRCA))
 		return 0;
@@ -421,7 +421,7 @@ U8 ACMD6(U8 BusWidth,U16 iRCA)
 出口：=0失败 =1成功
 说明：无
 **********************************************/
-U8 CMD9(U16 iRCA,U32 *lCSD)	
+uint8_t CMD9(uint16_t iRCA,uint32_t *lCSD)	
 {
 	rSDICARG = iRCA<<16;					// (RCA,stuff bit)
 	rSDICCON = (0x1<<10)|(0x1<<9)|(0x1<<8)|0x49;	// long_resp, wait_resp, start
@@ -442,7 +442,7 @@ U8 CMD9(U16 iRCA,U32 *lCSD)
 出口：=1：成功 =0：失败
 说明：无
 **********************************************/
-U8 CMD17(U32 Addr)	
+uint8_t CMD17(uint32_t Addr)	
 {
     //STEP1:发送指令 
     rSDICARG = Addr;				//设定指令参数 
@@ -459,7 +459,7 @@ U8 CMD17(U32 Addr)
 出口：=1：成功 =0：失败
 说明：无
 **********************************************/
-U8 CMD18(U32 Addr)	
+uint8_t CMD18(uint32_t Addr)	
 {
     //STEP1:发送指令 
     rSDICARG = Addr;				//设定指令参数 
@@ -476,7 +476,7 @@ U8 CMD18(U32 Addr)
 出口：=1：成功 =0：失败
 说明：无
 **********************************************/
-U8 CMD12(void)	
+uint8_t CMD12(void)	
 {
 	rSDICARG = 0x0;	    
 	rSDICCON = (0x1<<9)|(0x1<<8)|0x4c;	//sht_resp, wait_resp, start,
@@ -493,7 +493,7 @@ U8 CMD12(void)
 出口：=1：成功 =0：失败
 说明：无
 **********************************************/
-U8 CMD24(U32 Addr)	
+uint8_t CMD24(uint32_t Addr)	
 {
     //STEP1:发送指令 
     rSDICARG = Addr;				//设定指令参数 
@@ -510,7 +510,7 @@ U8 CMD24(U32 Addr)
 出口：=1：成功 =0：失败
 说明：无
 **********************************************/
-U8 CMD25(U32 Addr)	
+uint8_t CMD25(uint32_t Addr)	
 {
     //STEP1:发送指令 
     rSDICARG = Addr;				//设定指令参数 
@@ -527,7 +527,7 @@ U8 CMD25(U32 Addr)
 出口：=1：成功 =0：失败
 说明：无
 **********************************************/
-U8 CMD32(U32 Addr)	
+uint8_t CMD32(uint32_t Addr)	
 {
     //STEP1:发送指令 
     rSDICARG = Addr;				//设定指令参数 
@@ -544,7 +544,7 @@ U8 CMD32(U32 Addr)
 出口：=1：成功 =0：失败
 说明：无
 **********************************************/
-U8 CMD33(U32 Addr)	
+uint8_t CMD33(uint32_t Addr)	
 { 
     //STEP1:发送指令 
     rSDICARG = Addr;				//设定指令参数 
@@ -561,7 +561,7 @@ U8 CMD33(U32 Addr)
 出口：=1：成功 =0：失败
 说明：无
 **********************************************/
-U8 CMD38(void)		
+uint8_t CMD38(void)		
 { 
     //STEP1:发送指令 
     rSDICARG = 0;					//设定指令参数 
@@ -581,7 +581,7 @@ U8 CMD38(void)
 出口：=1：成功 =0：失败
 说明：无
 **********************************************/
-U8 Card_sel_desel(U8 cSelDesel,U16 iCardRCA)
+uint8_t Card_sel_desel(uint8_t cSelDesel,uint16_t iCardRCA)
 {
 	if(CMD7(cSelDesel,iCardRCA))
 		return 1;
@@ -597,7 +597,7 @@ U8 Card_sel_desel(U8 cSelDesel,U16 iCardRCA)
 出口：=1：成功 =0：失败
 说明：无
 **********************************************/
-U8 Set_bus_Width(U8 cCardType,U8 cBusWidth,U16 iRCA)
+uint8_t Set_bus_Width(uint8_t cCardType,uint8_t cBusWidth,uint16_t iRCA)
 {
 	if(cCardType==MMC_CARD)
 		return 0;
@@ -611,8 +611,8 @@ U8 Set_bus_Width(U8 cCardType,U8 cBusWidth,U16 iRCA)
 /**********************************************************************************
 功  能：该函数用于从SD卡中读出指定块起始地址的单个数据块
 参  数：
- U32  Addr  被读块的起始地址
- U32* RxBuffer 用于接收读出数据的缓冲区
+ uint32_t  Addr  被读块的起始地址
+ uint32_t* RxBuffer 用于接收读出数据的缓冲区
 返回值：
  0 读块操作不成功
  1 读块操作成功
@@ -620,11 +620,11 @@ U8 Set_bus_Width(U8 cCardType,U8 cBusWidth,U16 iRCA)
  在主调函数中定义一个数组作为接收缓冲区，如U32 Rx_buffer[BlockSize];
  然后开始调用Read_One_Block(addr,Rx_buffer);
 **********************************************************************************/
-U8 Read_One_Block(U32 Addr,U32* RxBuffer)
+uint8_t Read_One_Block(uint32_t Addr,uint32_t* RxBuffer)
 {
-	U16 i=0;
-	U32 status=0;
-	U16 BlockSize;			//定义块大小
+	uint16_t i=0;
+	uint32_t status=0;
+	uint16_t BlockSize;			//定义块大小
 	BlockSize=(1<<(SDCard_BlockSize-2)); 	//以Word为单位
 
 
@@ -661,20 +661,20 @@ U8 Read_One_Block(U32 Addr,U32* RxBuffer)
 功 能：该函数用于从 SD 卡中读出指定块起始地址和数据块数目的多个连续数据块，当要读取的 
 数据量满足时则停止读取。 
 参 数： 
-U32 Addr 被读块的起始地址 
-U32 DatSize 期待被读出的数据数目，以 Word 为单位 
-U32* RxBuffer 用于接收读出数据的缓冲区 
+uint32_t Addr 被读块的起始地址 
+uint32_t DatSize 期待被读出的数据数目，以 Word 为单位 
+uint32_t* RxBuffer 用于接收读出数据的缓冲区 
 返回值： 
 0 读块操作不成功 
 1 读块操作成功 
 举 例： 
-在主调函数中定义一个数组作为接收缓冲区，如 U32 Rx_buffer[BufferSize]; 
+在主调函数中定义一个数组作为接收缓冲区，如 uint32_t Rx_buffer[BufferSize]; 
 然后开始调用 Read_Mult_Block(addr,BufferSize,Rx_buffer); 
 **********************************************************************************/ 
-U8 Read_Mult_Block(U32 Addr,U32 DatSize,U32* RxBuffer)
+uint8_t Read_Mult_Block(uint32_t Addr,uint32_t DatSize,uint32_t* RxBuffer)
 { 
-	U32 i = 0; 
-	U32 status = 0; 
+	uint32_t i = 0; 
+	uint32_t status = 0; 
 
 	rSDIDTIMER=0x7fffff;		// Set timeout count
 	rSDIBSIZE=0x200;			// 512byte(128word)
@@ -711,8 +711,8 @@ U8 Read_Mult_Block(U32 Addr,U32 DatSize,U32* RxBuffer)
 /**********************************************************************************
 功  能：该函数用于向SD卡的一个数据块写入数据
 参  数：
- U32  Addr  被写块的起始地址
- U32* TxBuffer 用于发送数据的缓冲区
+ uint32_t  Addr  被写块的起始地址
+ uint32_t* TxBuffer 用于发送数据的缓冲区
 返回值：
  0 数据写入操作失败
  1 数据写入操作成功
@@ -720,11 +720,11 @@ U8 Read_Mult_Block(U32 Addr,U32 DatSize,U32* RxBuffer)
  在主调函数中定义一个数组作为发送缓冲区，如U32 Tx_buffer[BlockSize];
  然后开始调用Write_One_Block(addr,Tx_buffer);
 **********************************************************************************/
-U8 Write_One_Block(U32 Addr,U32* TxBuffer)
+uint8_t Write_One_Block(uint32_t Addr,uint32_t* TxBuffer)
 {
-	U16 i=0;
-	U32 status = 0;
-	U16 BlockSize; //定义块大小
+	uint16_t i=0;
+	uint32_t status = 0;
+	uint16_t BlockSize; //定义块大小
 	
 	BlockSize = (1<<(SDCard_BlockSize-2)); //以Word为单位
 
@@ -769,20 +769,20 @@ U8 Write_One_Block(U32 Addr,U32* TxBuffer)
 /********************************************************************************** 
 功 能：该函数用于向 SD 卡的多个数据块写入数据 
 参 数： 
-	U32 Addr 被写块的起始地址 
-	U32 DatSize 期待被写入数据的数目，以 Word 为单位 
-	U32* TxBuffer 待发送数据的缓冲区 
+	uint32_t Addr 被写块的起始地址 
+	uint32_t DatSize 期待被写入数据的数目，以 Word 为单位 
+	uint32_t* TxBuffer 待发送数据的缓冲区 
 返回值： 
 	0 数据写入操作失败 
 	1 数据写入操作成功 
 举 例： 
-在主调函数中定义一个数组作为发送缓冲区，如 U32 Tx_buffer[BlockSize]; 
+在主调函数中定义一个数组作为发送缓冲区，如 uint32_t Tx_buffer[BlockSize]; 
 然后开始调用 Write_Mult_Block(addr,DatSize,Tx_buffer); 
 **********************************************************************************/ 
-U8 Write_Mult_Block(U32 Addr,U32 DatSize,U32* TxBuffer)
+uint8_t Write_Mult_Block(uint32_t Addr,uint32_t DatSize,uint32_t* TxBuffer)
 { 
-	U16 i = 0; 
-	U32 status = 0; 
+	uint16_t i = 0; 
+	uint32_t status = 0; 
 
 	rSDIDTIMER=0x7fffff;		// Set timeout count
 	rSDIBSIZE=0x200;			// 512byte(128word)
@@ -833,8 +833,8 @@ U8 Write_Mult_Block(U32 Addr,U32 DatSize,U32* TxBuffer)
 /********************************************************************************** 
 功 能：该函数用于擦除指定地址区间的数据 
 参 数： 
-	U32 StartAddr 擦除的起始地址 
-	U32 EndAddr 擦除的结束地址 
+	uint32_t StartAddr 擦除的起始地址 
+	uint32_t EndAddr 擦除的结束地址 
 返回值： 
 	0 擦除操作成功 
 	1 擦除操作失败 
@@ -843,7 +843,7 @@ U8 Write_Mult_Block(U32 Addr,U32 DatSize,U32* TxBuffer)
 	小，但由于没有与扇区对齐，从而使起始地址和结束地址跨度为两个扇区，那么这两个扇区将会 
 	被擦除。 
 **********************************************************************************/ 
-U8 Erase_Block(U32 StartAddr,U32 EndAddr)
+uint8_t Erase_Block(uint32_t StartAddr,uint32_t EndAddr)
 { 
 	if(CMD32(StartAddr)!=1)
 		return 0;
@@ -860,10 +860,10 @@ U8 Erase_Block(U32 StartAddr,U32 EndAddr)
 出口：=0失败 =1成功
 说明：无
 **********************************************/
-U8 SDinit(void) 
+uint8_t SDinit(void) 
 {
-	U16 i;
-	U16 iTemp;
+	uint16_t i;
+	uint16_t iTemp;
 	
 	#ifdef __SD_MMC_DEBUG__
 	Uart_Printf("\n************\n");

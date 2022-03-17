@@ -7,12 +7,12 @@
 #define __MAIN_H__
 
 extern volatile unsigned char *downPt;
-extern volatile U32 totalDmaCount;
-extern volatile U32 downloadFileSize;
-extern volatile U32 downloadAddress;
-extern volatile U16 checkSum;
+extern volatile uint32_t totalDmaCount;
+extern volatile uint32_t downloadFileSize;
+extern volatile uint32_t downloadAddress;
+extern volatile uint16_t checkSum;
 
 extern int download_run;
-extern U32 tempDownloadAddress;
+extern uint32_t tempDownloadAddress;
 
 #endif /*__MAIN_H__*/

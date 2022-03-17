@@ -14,9 +14,9 @@
 void MemoryTest(void)
 {
 	int i;
-	U32 data;
+	uint32_t data;
 	int memError=0;
-	U32 *pt;
+	uint32_t *pt;
     
 	//
 	// memory test
@@ -25,22 +25,22 @@ void MemoryTest(void)
 	//test sdram from _RAM_STARTADDRESS+2M, hzh
 	Uart_Printf("Memory Test(%xh-%xh):WR",_RAM_STARTADDRESS+0x00200000,(_ISR_STARTADDRESS&0xffff0000));
 
-	//pt=(U32 *)_RAM_STARTADDRESS;
-	pt=(U32 *)(_RAM_STARTADDRESS+0x00200000);	//hzh
-	while((U32)pt<(_ISR_STARTADDRESS&0xffff0000))
+	//pt=(uint32_t *)_RAM_STARTADDRESS;
+	pt=(uint32_t *)(_RAM_STARTADDRESS+0x00200000);	//hzh
+	while((uint32_t)pt<(_ISR_STARTADDRESS&0xffff0000))
 	{
-		*pt=(U32)pt;
+		*pt=(uint32_t)pt;
 		pt++;
 	}
 
 	Uart_Printf("\b\bRD");
-	//pt=(U32 *)_RAM_STARTADDRESS;
-	pt=(U32 *)(_RAM_STARTADDRESS+0x00200000);	//hzh
+	//pt=(uint32_t *)_RAM_STARTADDRESS;
+	pt=(uint32_t *)(_RAM_STARTADDRESS+0x00200000);	//hzh
 	
-	while((U32)pt<(_ISR_STARTADDRESS&0xffff0000))
+	while((uint32_t)pt<(_ISR_STARTADDRESS&0xffff0000))
 	{
 		data=*pt;
-		if(data!=(U32)pt)
+		if(data!=(uint32_t)pt)
 		{
 			memError=1;
 		Uart_Printf("\b\bFAIL:0x%x=0x%x\n",i,data);

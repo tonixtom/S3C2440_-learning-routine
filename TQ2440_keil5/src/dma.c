@@ -8,20 +8,20 @@
 #define	DMA_CHECK_ATTR	1
 
 typedef struct{						//can't use __packed???
-    volatile U32 DISRC;	    //0x0
-    volatile U32 DISRCC;    //0x4
-    volatile U32 DIDST;	    //0x8
-    volatile U32 DIDSTC;    //0xc
-    volatile U32 DCON;	    //0x10
-    volatile U32 DSTAT;	    //0x14
-    volatile U32 DCSRC;	    //0x18
-    volatile U32 DCDST;	    //0x1c
-    volatile U32 DMASKTRIG; //0x20
+    volatile uint32_t DISRC;	    //0x0
+    volatile uint32_t DISRCC;    //0x4
+    volatile uint32_t DIDST;	    //0x8
+    volatile uint32_t DIDSTC;    //0xc
+    volatile uint32_t DCON;	    //0x10
+    volatile uint32_t DSTAT;	    //0x14
+    volatile uint32_t DCSRC;	    //0x18
+    volatile uint32_t DCDST;	    //0x1c
+    volatile uint32_t DMASKTRIG; //0x20
 }DMAReg;
 
 static struct{
-	U16 used;
-	U16 DevID;
+	uint16_t used;
+	uint16_t DevID;
 	DMAReg *pDMA;
 }
 DMAChannel[MAX_DMA_CHANNEL];
@@ -29,10 +29,10 @@ DMAChannel[MAX_DMA_CHANNEL];
 /********************************************************/
 //attr高16位为设备ID,低16位的高8位为DMA传送源,目的属性(AHP/APB,INCREASE/FIX)
 //低8位为请求源,返回值失败为REQUEST_DMA_FAIL,成功高16位为设备ID,低8位为申请到的通道
-U32 RequestDMASW(U32 attr, U32 mode)
+uint32_t RequestDMASW(uint32_t attr, uint32_t mode)
 {
-	U16 channel;
-	U32 ret;
+	uint16_t channel;
+	uint32_t ret;
 	
 	attr &= ~0xff;
 	mode &= ~HW_TRIG;
@@ -46,10 +46,10 @@ U32 RequestDMASW(U32 attr, U32 mode)
 	return ret;			
 }
 
-U32 RequestDMA(U32 attr, U32 mode)
+uint32_t RequestDMA(uint32_t attr, uint32_t mode)
 {
-	U16 DevID, ReqSrc, ch;
-	U32 ret=REQUEST_DMA_FAIL, r;
+	uint16_t DevID, ReqSrc, ch;
+	uint32_t ret=REQUEST_DMA_FAIL, r;
 	
 	DevID   = attr>>16;	
 	ReqSrc  = attr&0xff;	
@@ -61,7 +61,7 @@ U32 RequestDMA(U32 attr, U32 mode)
 		
 	if(DMAChannel[ReqSrc>>4].used!=DMA_IS_FREE)
 	{
-		U8 src = ReqSrc;			
+		uint8_t src = ReqSrc;			
 		
 		if(src==REQ_IISDI)
 		{		
@@ -127,9 +127,9 @@ RequestDmaExit:
 	return ret;			
 }
 
-U16 ReleaseDMA(U32 attr)
+uint16_t ReleaseDMA(uint32_t attr)
 {
-	U16 DevID, ReqSrc, ch;	
+	uint16_t DevID, ReqSrc, ch;	
 	
 	DevID  = attr>>16;
 	ReqSrc = attr&0xf;
@@ -148,9 +148,9 @@ U16 ReleaseDMA(U32 attr)
 	return 0;					
 }
 
-U16 StartDMA(U32 attr)
+uint16_t StartDMA(uint32_t attr)
 {
-	U16 DevID, ReqSrc, ch;	
+	uint16_t DevID, ReqSrc, ch;	
 	
 	DevID  = attr>>16;
 	ReqSrc = attr&0xf;
@@ -170,9 +170,9 @@ U16 StartDMA(U32 attr)
 	return 0;	
 }
 
-U16 StopDMA(U32 attr)
+uint16_t StopDMA(uint32_t attr)
 {
-	U16 DevID, ReqSrc, ch;
+	uint16_t DevID, ReqSrc, ch;
 	
 	DevID  = attr>>16;
 	ReqSrc = attr&0xf;
@@ -189,9 +189,9 @@ U16 StopDMA(U32 attr)
 	return 0;
 }
 
-U16 SetDMARun(U32 attr, U32 src_addr, U32 dst_addr, U32 len)
+uint16_t SetDMARun(uint32_t attr, uint32_t src_addr, uint32_t dst_addr, uint32_t len)
 {
-	U16 DevID, ReqSrc, ch;	
+	uint16_t DevID, ReqSrc, ch;	
 	
 	DevID  = attr>>16;
 	ReqSrc = attr&0xf;
@@ -218,9 +218,9 @@ U16 SetDMARun(U32 attr, U32 src_addr, U32 dst_addr, U32 len)
 	return 0;
 }
 
-U32 QueryDMAStat(U32 attr)
+uint32_t QueryDMAStat(uint32_t attr)
 {
-	U16 DevID, ReqSrc, ch;
+	uint16_t DevID, ReqSrc, ch;
 	
 	DevID  = attr>>16;
 	ReqSrc = attr&0xf;
@@ -235,9 +235,9 @@ U32 QueryDMAStat(U32 attr)
 	return DMAChannel[ch].pDMA->DSTAT;	//STAT[21:20], CURR_TC[19:0] 
 }
 
-U32 QueryDMASrc(U32 attr)
+uint32_t QueryDMASrc(uint32_t attr)
 {
-	U16 DevID, ReqSrc, ch;
+	uint16_t DevID, ReqSrc, ch;
 	
 	DevID  = attr>>16;
 	ReqSrc = attr&0xf;
@@ -252,9 +252,9 @@ U32 QueryDMASrc(U32 attr)
 	return DMAChannel[ch].pDMA->DCSRC;
 }
 
-U32 QueryDMADst(U32 attr)
+uint32_t QueryDMADst(uint32_t attr)
 {
-	U16 DevID, ReqSrc, ch;
+	uint16_t DevID, ReqSrc, ch;
 	
 	DevID  = attr>>16;
 	ReqSrc = attr&0xf;

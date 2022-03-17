@@ -35,8 +35,8 @@ void Lcd_Init(void)
 	rLCDCON4=(MVAL<<8)|(HSPW);
 	rLCDCON5 = (1<<11) | (0<<10) | (1<<9) | (1<<8) | (0<<7) | (0<<6) | (1<<3)  |(BSWP<<1) | (HWSWP);
 
-	rLCDSADDR1=(((U32)LCD_BUFFER>>22)<<21)|M5D((U32)LCD_BUFFER>>1);
-	rLCDSADDR2=M5D( ((U32)LCD_BUFFER+(SCR_XSIZE_TFT*LCD_YSIZE_TFT*2))>>1 );
+	rLCDSADDR1=(((uint32_t)LCD_BUFFER>>22)<<21)|M5D((uint32_t)LCD_BUFFER>>1);
+	rLCDSADDR2=M5D( ((uint32_t)LCD_BUFFER+(SCR_XSIZE_TFT*LCD_YSIZE_TFT*2))>>1 );
 	rLCDSADDR3=(((SCR_XSIZE_TFT-LCD_XSIZE_TFT)/1)<<11)|(LCD_XSIZE_TFT/1);
 	rLCDINTMSK|=(3); // MASK LCD Sub Interrupt
 	rTCONSEL &= (~7) ;     // Disable LPC3480
@@ -74,7 +74,7 @@ TFT LCD移动观察窗口
 **************************************************************/
 void Lcd_MoveViewPort(int vx,int vy)
 {
-	U32 addr;
+	uint32_t addr;
 
 	SET_IF(); 
 	#if (LCD_XSIZE_TFT<32)
@@ -83,7 +83,7 @@ void Lcd_MoveViewPort(int vx,int vy)
 		while((rLCDCON1>>18)==0); // if x>32
 	#endif
     
-	addr=(U32)LCD_BUFFER+(vx*2)+vy*(SCR_XSIZE_TFT*2);
+	addr=(uint32_t)LCD_BUFFER+(vx*2)+vy*(SCR_XSIZE_TFT*2);
 	rLCDSADDR1= ( (addr>>22)<<21 ) | M5D(addr>>1);
 	rLCDSADDR2= M5D(((addr+(SCR_XSIZE_TFT*LCD_YSIZE_TFT*2))>>1));
 	CLR_IF();
@@ -137,7 +137,7 @@ void MoveViewPort(void)
 /**************************************************************
 TFT LCD单个象素的显示数据输出
 **************************************************************/
-void PutPixel(U32 x,U32 y, U32 c )
+void PutPixel(uint32_t x,uint32_t y, uint32_t c )
 {
 	if ( (x < SCR_XSIZE_TFT) && (y < SCR_YSIZE_TFT) )
 		LCD_BUFFER[(y)][(x)] = c;
@@ -146,7 +146,7 @@ void PutPixel(U32 x,U32 y, U32 c )
 /**************************************************************
 TFT LCD全屏填充特定颜色单元或清屏
 **************************************************************/
-void Lcd_ClearScr( U32 c)
+void Lcd_ClearScr( uint32_t c)
 {
 	unsigned int x,y ;
 		
@@ -316,7 +316,7 @@ void Glib_FilledRectangle(int x1,int y1,int x2,int y2,int color)
 void Paint_Bmp(int x0,int y0,int h,int l,unsigned char bmp[])
 {
 	int x,y;
-	U32 c;
+	uint32_t c;
 	int p = 0;
 	
     for( y = y0 ; y < l ; y++ )

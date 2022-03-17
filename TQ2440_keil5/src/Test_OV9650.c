@@ -43,7 +43,7 @@ static __inline void set_gpio_ctrl(unsigned int gpio)
 #define	mdelay(x)		Delay((x)*8)
 #define	printk			Uart_Printf
 
-static U8 sccb_id = 0x60;	//OV9650
+static uint8_t sccb_id = 0x60;	//OV9650
 
 
 

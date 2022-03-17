@@ -16,10 +16,10 @@
 
 void Test_Iic(void);
 void Test_Iic2(void);
-void Wr24C080(U32 slvAddr,U32 addr,U8 data);    
-void Rd24C080(U32 slvAddr,U32 addr,U8 *data);   
-void _Wr24C080(U32 slvAddr,U32 addr,U8 data);   
-void _Rd24C080(U32 slvAddr,U32 addr,U8 *data);  
+void Wr24C080(uint32_t slvAddr,uint32_t addr,uint8_t data);    
+void Rd24C080(uint32_t slvAddr,uint32_t addr,uint8_t *data);   
+void _Wr24C080(uint32_t slvAddr,uint32_t addr,uint8_t data);   
+void _Rd24C080(uint32_t slvAddr,uint32_t addr,uint8_t *data);  
 
 void __irq IicInt(void);
 void IicPoll(void);

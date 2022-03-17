@@ -16,7 +16,7 @@ static void __irq IicInt(void)
 	iic_ints++;
 }
 
-static int iic_wr(U8 data, U8 cnt)
+static int iic_wr(uint8_t data, uint8_t cnt)
 {
 	int i, c;
 	
@@ -37,7 +37,7 @@ static int iic_wr(U8 data, U8 cnt)
 	return (rIICSTAT&1)?-1:0;
 }
 
-static int iic_rd(U8 *pBuf)
+static int iic_rd(uint8_t *pBuf)
 {
 	int i, c;
 	
@@ -55,7 +55,7 @@ static int iic_rd(U8 *pBuf)
 	return -1;
 }
 
-static int seek_iic_device(U8 slvAddr)
+static int seek_iic_device(uint8_t slvAddr)
 {
 	int i;
 	
@@ -72,10 +72,10 @@ static int seek_iic_device(U8 slvAddr)
 }
 
 //8 bits register address only
-static int write_eeprom(U8 slvAddr, U8 addr, U8 data)
+static int write_eeprom(uint8_t slvAddr, uint8_t addr, uint8_t data)
 {
 	int i;
-	U8 ch[3];
+	uint8_t ch[3];
 	
 	ch[1] = addr;
 	ch[2] = data;
@@ -103,10 +103,10 @@ static int write_eeprom(U8 slvAddr, U8 addr, U8 data)
 }
 
 //8 bits register address only
-static int read_eeprom(U8 slvAddr, U8 addr, U8 *pBuf)
+static int read_eeprom(uint8_t slvAddr, uint8_t addr, uint8_t *pBuf)
 {
 	int i;
-	U8 ch[2];
+	uint8_t ch[2];
 	
 	ch[1] = addr;
 	
@@ -156,11 +156,11 @@ static void end_iic_op(void)
 	DisableIrq(BIT_IIC);
 }
 
-int write_24c02(U8 *pBuf)
+int write_24c02(uint8_t *pBuf)
 {
 	int i;
 	
-	U8 dat[256];
+	uint8_t dat[256];
 	
 	for(i=0; i<256; i++)
 		dat[i] = 255-i;
@@ -182,7 +182,7 @@ int write_24c02(U8 *pBuf)
 	return i<256;
 }
 
-int read_24c02(U8 *pBuf)
+int read_24c02(uint8_t *pBuf)
 {
 	int i;
 	

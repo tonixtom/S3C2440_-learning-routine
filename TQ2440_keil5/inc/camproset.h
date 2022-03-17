@@ -14,8 +14,8 @@ extern "C" {
 #define CAM_MODULE_RESERVED_BIT9	(1<<5)
 
 
-void Wr_CamIIC(U32 slvAddr, U32 addr, U8 data);
-void Rd_CamIIC(U32 slvAddr,U32 addr,U8 *data);
+void Wr_CamIIC(uint32_t slvAddr, uint32_t addr, uint8_t data);
+void Rd_CamIIC(uint32_t slvAddr,uint32_t addr,uint8_t *data);
 void __irq Cam_IICInt(void);
 
 void Camera_WriteByte(void);

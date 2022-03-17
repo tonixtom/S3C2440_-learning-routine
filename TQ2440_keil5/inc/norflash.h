@@ -3,7 +3,7 @@
 
 int UnlockAllBlks(void);
 int ChkNorFlash(void);
-void ProgNorFlash(U32 addr, U32 src, U32 len);
+void ProgNorFlash(uint32_t addr, uint32_t src, uint32_t len);
 
 
 #endif

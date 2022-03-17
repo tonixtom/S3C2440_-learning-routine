@@ -3,13 +3,13 @@
 
 #include "def.h"
 
-#define	HWAVEOUT	U32
+#define	HWAVEOUT	uint32_t
 #define	LPHWAVEOUT	HWAVEOUT *
 #define	HWAVEIN		HWAVEOUT
 #define	LPHWAVEIN	HWAVEIN *
 
-#define	LPDWORD	U32 *
-#define	MMRESULT	U32
+#define	LPDWORD	uint32_t *
+#define	MMRESULT	uint32_t
 
 #define MMSYSERR_BASE 	0
 #define WAVERR_BASE 	32

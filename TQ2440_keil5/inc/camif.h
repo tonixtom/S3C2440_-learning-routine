@@ -17,8 +17,8 @@ extern "C" {
 
 #include "camdef.h"
 
-void CalculateBurstSize(U32 dstHSize,U32 *mainBurstSize,U32 *RemainedBurstSize);
-void CalculatePrescalerRatioShift(U32 srcWidth, U32 dstWidth, U32 *ratio,U32 *shift);
+void CalculateBurstSize(uint32_t dstHSize,uint32_t *mainBurstSize,uint32_t *RemainedBurstSize);
+void CalculatePrescalerRatioShift(uint32_t srcWidth, uint32_t dstWidth, uint32_t *ratio,uint32_t *shift);
 
 void __irq CamPviewIsr(void);
 void __irq CamCodecIsr(void);
@@ -35,7 +35,7 @@ void CamReset(void);
 void CamModuleReset(void);
 void SetCAMClockDivider(int divn);
 
-void CamCaptureStart(U32 mode);
+void CamCaptureStart(uint32_t mode);
 void CamCaptureStop(void);
 void _CamPviewStopHw(void);
 void _CamCodecStopHw(void);

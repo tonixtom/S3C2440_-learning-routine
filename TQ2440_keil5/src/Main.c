@@ -48,32 +48,32 @@ extern void Test_Iic(void) ;
 extern void Test_SDI(void) ;
 extern void Camera_Test( void ) ;
 
-volatile U32 downloadAddress;
+volatile uint32_t downloadAddress;
 
 void (*restart)(void)=(void (*)(void))0x0;
 
 volatile unsigned char *downPt;
-volatile U32 downloadFileSize;
-volatile U16 checkSum;
+volatile uint32_t downloadFileSize;
+volatile uint16_t checkSum;
 volatile unsigned int err=0;
-volatile U32 totalDmaCount;
+volatile uint32_t totalDmaCount;
 
 volatile int isUsbdSetConfiguration;
 
 int download_run=0;
-U32 tempDownloadAddress;
+uint32_t tempDownloadAddress;
 int menuUsed=0;
 
 extern char Image$$RW_RAM1$$Limit[];
-U32 *pMagicNum=(U32 *)Image$$RW_RAM1$$Limit;
+uint32_t *pMagicNum=(uint32_t *)Image$$RW_RAM1$$Limit;
 int consoleNum;
 
-static U32 cpu_freq;
-static U32 UPLL;
+static uint32_t cpu_freq;
+static uint32_t UPLL;
 static void cal_cpu_bus_clk(void)
 {
-	U32 val;
-	U8 m, p, s;
+	uint32_t val;
+	uint8_t m, p, s;
 	
 	val = rMPLLCON;
 	m = (val>>12)&0xff;
@@ -155,9 +155,9 @@ void Main(void)
 {
 	char *mode;
 	int i;
-	U8 key;
-	U32 mpll_val = 0 ;
-	//U32 divn_upll = 0 ;
+	uint8_t key;
+	uint32_t mpll_val = 0 ;
+	//uint32_t divn_upll = 0 ;
     
 	#if ADS10   
 //	__rt_lib_init(); //for ADS 1.0
@@ -238,7 +238,7 @@ void Main(void)
 
 	while(1)
 	{
-		U8 idx;
+		uint8_t idx;
 		
 		Uart_Printf("\nPlease select function : \n");	
 		for(i=0; CmdTip[i].fun!=0; i++)
@@ -293,14 +293,14 @@ void HaltDabort(void)
 void ClearMemory(void)
 {
 	int memError=0;
-	U32 *pt;
+	uint32_t *pt;
 	
 	Uart_Printf("Clear Memory (%xh-%xh):WR",_RAM_STARTADDRESS,HEAPEND);
 
-	pt=(U32 *)_RAM_STARTADDRESS;
-	while((U32)pt < HEAPEND)
+	pt=(uint32_t *)_RAM_STARTADDRESS;
+	while((uint32_t)pt < HEAPEND)
 	{
-		*pt=(U32)0x0;
+		*pt=(uint32_t)0x0;
 		pt++;
 	}
 	

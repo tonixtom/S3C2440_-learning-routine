@@ -102,9 +102,9 @@ void ChangeRomCacheStatus(int attr)
 
 void MMU_SetMTT(int vaddrStart,int vaddrEnd,int paddrStart,int attr)
 {
-	volatile U32 *pTT;
+	volatile uint32_t *pTT;
 	volatile int i,nSec;
-	pTT=(U32 *)_MMUTT_STARTADDRESS+(vaddrStart>>20);
+	pTT=(uint32_t *)_MMUTT_STARTADDRESS+(vaddrStart>>20);
 	nSec=(vaddrEnd>>20)-(vaddrStart>>20);
 	for(i=0;i<=nSec;i++)*pTT++=attr |(((paddrStart>>20)+i)<<20);
 }

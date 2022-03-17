@@ -23,7 +23,7 @@
 				 
 				
 ******************************************************************************/
-U8 Key_Scan( void )
+uint8_t Key_Scan( void )
 {
 	Delay( 80 ) ;
 	if(      (rGPFDAT&(1<< 0)) == 0 )
@@ -61,8 +61,8 @@ U8 Key_Scan( void )
 
 static void __irq Key_ISR(void)
 {
-	U8 key;
-	U32 r;
+	uint8_t key;
+	uint32_t r;
 
 	EnterCritical(&r);
 	if(rINTPND==BIT_EINT1)
@@ -114,7 +114,7 @@ void KeyScan_Test(void)
 	rEINTPEND |= (1<<4);							//clear eint 4
 	rEINTMASK &= ~(1<<4);						//enable eint 4
 	ClearPending(BIT_EINT0|BIT_EINT1|BIT_EINT2|BIT_EINT4_7);
-	pISR_EINT0 = pISR_EINT1 = pISR_EINT2 = pISR_EINT4_7 = (U32)Key_ISR;
+	pISR_EINT0 = pISR_EINT1 = pISR_EINT2 = pISR_EINT4_7 = (uint32_t)Key_ISR;
 	EnableIrq(BIT_EINT0|BIT_EINT1|BIT_EINT2|BIT_EINT4_7);	
 
 	 while( Uart_GetKey() != ESC_KEY ) ;

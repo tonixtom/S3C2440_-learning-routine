@@ -11,7 +11,7 @@
 #include "def.h"
 #include "IIC.h"
 
-static U8 _iicData[IICBUFSIZE];
+static uint8_t _iicData[IICBUFSIZE];
 static volatile int _iicDataCount;
 static volatile int _iicStatus;
 static volatile int _iicMode;
@@ -27,7 +27,7 @@ static int _iicPt;
 void Test_Iic(void)
 {
 	unsigned int i,j,save_E,save_PE;
-	static U8 data[256];
+	static uint8_t data[256];
 
 	Uart_Printf("\nIIC Test(Interrupt) using AT24C02\n");
 
@@ -50,7 +50,7 @@ void Test_Iic(void)
 	Uart_Printf("Write test data into AT24C02\n");
 
 	for(i=0;i<256;i++)
-		Wr24C080(0xa0,(U8)i,i);
+		Wr24C080(0xa0,(uint8_t)i,i);
            
 	for(i=0;i<256;i++)
 		data[i] = 0;
@@ -58,7 +58,7 @@ void Test_Iic(void)
 	Uart_Printf("Read test data from AT24C02\n");
     
 	for(i=0;i<256;i++)
-		Rd24C080(0xa0,(U8)i,&(data[i])); 
+		Rd24C080(0xa0,(uint8_t)i,&(data[i])); 
 
         //Line changed 0 ~ f
 	for(i=0;i<16;i++)
@@ -74,11 +74,11 @@ void Test_Iic(void)
 
 
 //*************************[ Wr24C080 ]****************************
-void Wr24C080(U32 slvAddr,U32 addr,U8 data)
+void Wr24C080(uint32_t slvAddr,uint32_t addr,uint8_t data)
 {
 	_iicMode      = WRDATA;
 	_iicPt        = 0;
-	_iicData[0]   = (U8)addr;
+	_iicData[0]   = (uint8_t)addr;
 	_iicData[1]   = data;
 	_iicDataCount = 2;
     
@@ -109,11 +109,11 @@ void Wr24C080(U32 slvAddr,U32 addr,U8 data)
 }
         
 //**********************[ Rd24C080 ] ***********************************
-void Rd24C080(U32 slvAddr,U32 addr,U8 *data)
+void Rd24C080(uint32_t slvAddr,uint32_t addr,uint8_t *data)
 {
 	_iicMode      = SETRDADDR;
 	_iicPt        = 0;
-	_iicData[0]   = (U8)addr;
+	_iicData[0]   = (uint8_t)addr;
 	_iicDataCount = 1;
 
 	rIICDS   = slvAddr;
@@ -137,7 +137,7 @@ void Rd24C080(U32 slvAddr,U32 addr,U8 *data)
 //-------------------------------------------------------------------------
 void __irq IicInt(void)
 {
-	U32 iicSt,i;
+	uint32_t iicSt,i;
     
 	rSRCPND = BIT_IIC;          //Clear pending bit
 	rINTPND = BIT_IIC;
@@ -213,7 +213,7 @@ void __irq IicInt(void)
 void Test_Iic2(void)
 {
 	unsigned int i,j,save_E,save_PE;
-	static U8 data[256];
+	static uint8_t data[256];
     
 	Uart_Printf("[ IIC Test(Polling) using KS24C080 ]\n");
 
@@ -233,13 +233,13 @@ void Test_Iic2(void)
 	Uart_Printf("Write test data into KS24C080\n");
 
 	for(i=0;i<256;i++)
-		_Wr24C080(0xa0,(U8)i,255-i);
+		_Wr24C080(0xa0,(uint8_t)i,255-i);
 	for(i=0;i<256;i++)
 		data[i] = 0;
 
 	Uart_Printf("Read test data from KS24C080\n");
 	for(i=0;i<256;i++)
-		_Rd24C080(0xa0,(U8)i,&(data[i])); 
+		_Rd24C080(0xa0,(uint8_t)i,&(data[i])); 
 
 	for(i=0;i<16;i++)
 	{
@@ -253,11 +253,11 @@ void Test_Iic2(void)
 }
 
 //**************[ _Wr24C080 ]*****************************************
-void _Wr24C080(U32 slvAddr,U32 addr,U8 data)
+void _Wr24C080(uint32_t slvAddr,uint32_t addr,uint8_t data)
 {
 	_iicMode      = WRDATA;
 	_iicPt        = 0;
-	_iicData[0]   = (U8)addr;
+	_iicData[0]   = (uint8_t)addr;
 	_iicData[1]   = data;
 	_iicDataCount = 2;
     
@@ -291,11 +291,11 @@ void _Wr24C080(U32 slvAddr,U32 addr,U8 data)
 }
         
 //************************[ _Rd24C080 ]********************************
-void _Rd24C080(U32 slvAddr,U32 addr,U8 *data)
+void _Rd24C080(uint32_t slvAddr,uint32_t addr,uint8_t *data)
 {
 	_iicMode      = SETRDADDR;
 	_iicPt        = 0;
-	_iicData[0]   = (U8)addr;
+	_iicData[0]   = (uint8_t)addr;
 	_iicDataCount = 1;
 
 	rIICDS   = slvAddr;
@@ -327,7 +327,7 @@ void Run_IicPoll(void)
 //**********************[IicPoll ]**************************************
 void IicPoll(void)
 {
-	U32 iicSt,i;
+	uint32_t iicSt,i;
     
 	iicSt = rIICSTAT; 
 	if(iicSt & 0x8){}                   //When bus arbitration is failed.

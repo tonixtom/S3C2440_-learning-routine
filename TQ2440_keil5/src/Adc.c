@@ -14,7 +14,7 @@
 #define ADC_FREQ 2500000
  #define LOOP 10000
 
-volatile U32 preScaler;
+volatile uint32_t preScaler;
 
 //==================================================================================		
 int ReadAdc(int ch)
@@ -42,7 +42,7 @@ int ReadAdc(int ch)
 void Test_Adc(void) 
 {
 	int a2=0; //Initialize variables
-	U32 rADCCON_save = rADCCON;
+	uint32_t rADCCON_save = rADCCON;
     
 	Uart_Printf( "\nADC INPUT Test, press ESC key to exit !\n" ) ;
 

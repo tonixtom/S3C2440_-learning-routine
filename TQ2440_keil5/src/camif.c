@@ -16,17 +16,17 @@ Descriptions
 
 extern unsigned short LCD_BUFFER[SCR_YSIZE_TFT][SCR_XSIZE_TFT];
 
-volatile U32 camTestMode;
-volatile U32 camCodecCaptureCount;
-volatile U32 camPviewCaptureCount;
-volatile U32 camCodecStatus;
-volatile U32 camPviewStatus;
-volatile U32 amount;
+volatile uint32_t camTestMode;
+volatile uint32_t camCodecCaptureCount;
+volatile uint32_t camPviewCaptureCount;
+volatile uint32_t camCodecStatus;
+volatile uint32_t camPviewStatus;
+volatile uint32_t amount;
 
-U32 save_GPJCON, save_GPJDAT, save_GPJUP;
+uint32_t save_GPJCON, save_GPJDAT, save_GPJUP;
 
-U8 flagCaptured_P = 0;
-U8 flagCaptured_C = 0;
+uint8_t flagCaptured_P = 0;
+uint8_t flagCaptured_C = 0;
 
 int Test_OV9650(void);
 
@@ -152,15 +152,15 @@ WinVerOffset: Size of Window Offset for Vertical Direction
 CoFrameBuffer: Start Address for Codec DMA
 PrFrameBuffer: Start Address for Previe DMA
 */
-void CamInit(U32 CoDstWidth, U32 CoDstHeight, U32 PrDstWidth, U32 PrDstHeight, 
-			U32 WinHorOffset, U32 WinVerOffset,  U32 CoFrameBuffer, U32 PrFrameBuffer)
+void CamInit(uint32_t CoDstWidth, uint32_t CoDstHeight, uint32_t PrDstWidth, uint32_t PrDstHeight, 
+			uint32_t WinHorOffset, uint32_t WinVerOffset,  uint32_t CoFrameBuffer, uint32_t PrFrameBuffer)
 {
-	U32 WinOfsEn;
-	U32 divisor, multiplier;
-	U32 MainBurstSizeY, RemainedBurstSizeY, MainBurstSizeC, RemainedBurstSizeC, MainBurstSizeRGB, RemainedBurstSizeRGB;
-	U32 H_Shift, V_Shift, PreHorRatio, PreVerRatio, MainHorRatio, MainVerRatio;
-	U32 SrcWidth, SrcHeight;
-	U32 ScaleUp_H_Co, ScaleUp_V_Co, ScaleUp_H_Pr, ScaleUp_V_Pr;
+	uint32_t WinOfsEn;
+	uint32_t divisor, multiplier;
+	uint32_t MainBurstSizeY, RemainedBurstSizeY, MainBurstSizeC, RemainedBurstSizeC, MainBurstSizeRGB, RemainedBurstSizeRGB;
+	uint32_t H_Shift, V_Shift, PreHorRatio, PreVerRatio, MainHorRatio, MainVerRatio;
+	uint32_t SrcWidth, SrcHeight;
+	uint32_t ScaleUp_H_Co, ScaleUp_V_Co, ScaleUp_H_Pr, ScaleUp_V_Pr;
 
 	//constant for calculating codec dma address
 	if(CAM_CODEC_OUTPUT)
@@ -264,10 +264,10 @@ void CamInit(U32 CoDstWidth, U32 CoDstHeight, U32 PrDstWidth, U32 PrDstHeight,
 	}	
 	else // direct preview mode
 	{
-		rCIPRCLRSA1 = (U32)LCD_BUFFER;
-		rCIPRCLRSA2 = (U32)LCD_BUFFER;
-		rCIPRCLRSA3 = (U32)LCD_BUFFER;
-		rCIPRCLRSA4 = (U32)LCD_BUFFER;
+		rCIPRCLRSA1 = (uint32_t)LCD_BUFFER;
+		rCIPRCLRSA2 = (uint32_t)LCD_BUFFER;
+		rCIPRCLRSA3 = (uint32_t)LCD_BUFFER;
+		rCIPRCLRSA4 = (uint32_t)LCD_BUFFER;
 	}	
 
 	rCIPRTRGFMT=(PrDstWidth<<16)|(CAM_FLIP_180<<14)|(PrDstHeight);
@@ -298,9 +298,9 @@ void CamInit(U32 CoDstWidth, U32 CoDstHeight, U32 PrDstWidth, U32 PrDstHeight,
  - dstHSize: the number of the byte of H Size.
  
 */
-void CalculateBurstSize(U32 hSize,U32 *mainBurstSize,U32 *remainedBurstSize)
+void CalculateBurstSize(uint32_t hSize,uint32_t *mainBurstSize,uint32_t *remainedBurstSize)
 {
-	U32 tmp;	
+	uint32_t tmp;	
 	tmp=(hSize/4)%16;
 	switch(tmp) {
 		case 0:
@@ -344,7 +344,7 @@ void CalculateBurstSize(U32 hSize,U32 *mainBurstSize,U32 *remainedBurstSize)
  - none
  
 */
-void CalculatePrescalerRatioShift(U32 SrcSize, U32 DstSize, U32 *ratio,U32 *shift)
+void CalculatePrescalerRatioShift(uint32_t SrcSize, uint32_t DstSize, uint32_t *ratio,uint32_t *shift)
 {
 	if(SrcSize>=64*DstSize) {
 		Uart_Printf("ERROR: out of the prescaler range: SrcSize/DstSize = %d(< 64)\n",SrcSize/DstSize);
@@ -385,7 +385,7 @@ void CalculatePrescalerRatioShift(U32 SrcSize, U32 DstSize, U32 *ratio,U32 *shif
  - mode= CAM_CODEC_CAPTURE_ENABLE_BIT or CAM_PVIEW_CAPTURE_ENABLE_BIT or both
   
 */
-void CamCaptureStart(U32 mode)
+void CamCaptureStart(uint32_t mode)
 { 
     
 	if(mode&CAM_CODEC_SCALER_CAPTURE_ENABLE_BIT) {
@@ -438,7 +438,7 @@ void _CamPviewStopHw(void)
 void __irq CamIsr(void)
 {
 
-	U32 completedFrameIndex;
+	uint32_t completedFrameIndex;
 
 	if (rSUBSRCPND&BIT_SUB_CAM_C)
 	{
@@ -528,13 +528,13 @@ void __irq CamIsr(void)
  ******************************************************************************/
 
 
-U32 Conv_YCbCr_Rgb(U8 y0, U8 y1, U8 cb0, U8 cr0)  // second solution... by junon
+uint32_t Conv_YCbCr_Rgb(uint8_t y0, uint8_t y1, uint8_t cb0, uint8_t cr0)  // second solution... by junon
 {
 	// bit order is
 	// YCbCr = [Cr0 Y1 Cb0 Y0], RGB=[R1,G1,B1,R0,G0,B0].
 	
 	int r0, g0, b0, r1, g1, b1;
-	U32 rgb0, rgb1, rgb;
+	uint32_t rgb0, rgb1, rgb;
  
 	#if 1 // 4 frames/s @192MHz, 12MHz ; 6 frames/s @450MHz, 12MHz
 	r0 = YCbCrtoR(y0, cb0, cr0);
@@ -560,8 +560,8 @@ U32 Conv_YCbCr_Rgb(U8 y0, U8 y1, U8 cb0, U8 cr0)  // second solution... by junon
 	if (b1<0) b1 = 0;
 	
 	// 5:6:5 16bit format
-	rgb0 = (((U16)r0>>3)<<11) | (((U16)g0>>2)<<5) | (((U16)b0>>3)<<0);	//RGB565.
-	rgb1 = (((U16)r1>>3)<<11) | (((U16)g1>>2)<<5) | (((U16)b1>>3)<<0);	//RGB565.
+	rgb0 = (((uint16_t)r0>>3)<<11) | (((uint16_t)g0>>2)<<5) | (((uint16_t)b0>>3)<<0);	//RGB565.
+	rgb1 = (((uint16_t)r1>>3)<<11) | (((uint16_t)g1>>2)<<5) | (((uint16_t)b1>>3)<<0);	//RGB565.
 
 	rgb = (rgb1<<16) | rgb0;
 
@@ -569,11 +569,11 @@ U32 Conv_YCbCr_Rgb(U8 y0, U8 y1, U8 cb0, U8 cr0)  // second solution... by junon
 }
 
 
-void Display_Cam_Image(U32 size_x, U32 size_y)
+void Display_Cam_Image(uint32_t size_x, uint32_t size_y)
 {
-	U8 *buffer_y, *buffer_cb, *buffer_cr;
-	U32 rgb_data0; 
-	U32 x, y;
+	uint8_t *buffer_y, *buffer_cb, *buffer_cr;
+	uint32_t rgb_data0; 
+	uint32_t x, y;
 	int temp;
 
 	if (CAM_CODEC_4PP)
@@ -585,29 +585,29 @@ void Display_Cam_Image(U32 size_x, U32 size_y)
 	switch (temp) // current frame mem - 2
 	{
 	case 0:
-		buffer_y = (U8 *)rCICOYSA1;
-		buffer_cb = (U8 *)rCICOCBSA1;
-		buffer_cr = (U8 *)rCICOCRSA1;
+		buffer_y = (uint8_t *)rCICOYSA1;
+		buffer_cb = (uint8_t *)rCICOCBSA1;
+		buffer_cr = (uint8_t *)rCICOCRSA1;
 		break;
 	case 1:
-		buffer_y = (U8 *)rCICOYSA2;
-		buffer_cb = (U8 *)rCICOCBSA2;
-		buffer_cr = (U8 *)rCICOCRSA2;
+		buffer_y = (uint8_t *)rCICOYSA2;
+		buffer_cb = (uint8_t *)rCICOCBSA2;
+		buffer_cr = (uint8_t *)rCICOCRSA2;
 		break;
 	case 2:
-		buffer_y = (U8 *)rCICOYSA3;
-		buffer_cb = (U8 *)rCICOCBSA3;
-		buffer_cr = (U8 *)rCICOCRSA3;
+		buffer_y = (uint8_t *)rCICOYSA3;
+		buffer_cb = (uint8_t *)rCICOCBSA3;
+		buffer_cr = (uint8_t *)rCICOCRSA3;
 		break;
 	case 3:
-		buffer_y = (U8 *)rCICOYSA4;
-		buffer_cb = (U8 *)rCICOCBSA4;
-		buffer_cr = (U8 *)rCICOCRSA4;
+		buffer_y = (uint8_t *)rCICOYSA4;
+		buffer_cb = (uint8_t *)rCICOCBSA4;
+		buffer_cr = (uint8_t *)rCICOCRSA4;
 		break;
 	default :
-		buffer_y = (U8 *)rCICOYSA1;
-		buffer_cb = (U8 *)rCICOCBSA1;
-		buffer_cr = (U8 *)rCICOCRSA1;
+		buffer_y = (uint8_t *)rCICOYSA1;
+		buffer_cb = (uint8_t *)rCICOCBSA1;
+		buffer_cr = (uint8_t *)rCICOCRSA1;
 		break;
 	}
 
@@ -677,7 +677,7 @@ void Test_CamPreview(void)
 	// Start Capture	
 	rSUBSRCPND |= BIT_SUB_CAM_C|BIT_SUB_CAM_P;
 	ClearPending(BIT_CAM);
-	pISR_CAM = (U32)CamIsr;    
+	pISR_CAM = (uint32_t)CamIsr;    
 	CamPreviewIntUnmask();
 	CamCaptureStart(CAM_PVIEW_SCALER_CAPTURE_ENABLE_BIT);
 	Uart_Printf("Press 'ESC' key to exit!\n");

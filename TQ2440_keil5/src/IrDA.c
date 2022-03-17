@@ -10,12 +10,12 @@ void IrDA_Port_Return(void);
 void __irq IrDA_TxInt(void);
 void __irq IrDA_RxOrErr(void);
 
-volatile U8 *IrDAdataPt;
-volatile U8 *IrDAdataFl;
-volatile U32 IrDA_cnt,IrDA_end,IrDA_err,IrDA_BAUD;
-volatile U32 sirda_rGPBCON,sirda_rGPBDAT,sirda_rGPBUP;
-volatile U32 sirda_rGPHCON,sirda_rGPHDAT,sirda_rGPHUP;
-volatile U32 sirda_ULCON2,sirda_UCON2,sirda_UFCON2,sirda_UMCON2,sirda_UBRDIV2;
+volatile uint8_t *IrDAdataPt;
+volatile uint8_t *IrDAdataFl;
+volatile uint32_t IrDA_cnt,IrDA_end,IrDA_err,IrDA_BAUD;
+volatile uint32_t sirda_rGPBCON,sirda_rGPBDAT,sirda_rGPBUP;
+volatile uint32_t sirda_rGPHCON,sirda_rGPHDAT,sirda_rGPHUP;
+volatile uint32_t sirda_ULCON2,sirda_UCON2,sirda_UFCON2,sirda_UMCON2,sirda_UBRDIV2;
 
 void IrDA_Port_Set(void)
 {
@@ -111,7 +111,7 @@ void __irq IrDA_RxOrErr(void)
     ClearPending(BIT_UART2);
 }
 
-extern U32 PCLK;
+extern uint32_t PCLK;
 
 void Test_IrDA_Tx(void)
 {
@@ -139,7 +139,7 @@ void Test_IrDA_Tx(void)
 	//Use PCLK,Tx&RxLevel interrupt,Rx timeout disable,Rx err interrupt enable,Non-loopback,Tx&Rx disable
 	Uart_Printf("Now start UART IrDA Tx&Rx test, check data[a~z]\n");
 
-	pISR_UART2 = (U32)IrDA_RxOrErr;
+	pISR_UART2 = (uint32_t)IrDA_RxOrErr;
 	EnableSubIrq(BIT_SUB_RXD2|BIT_SUB_ERR2);	
 	EnableIrq(BIT_UART2);
 
@@ -172,7 +172,7 @@ void Test_IrDA_Rx(void)
     IrDA_err=0;
     IrDA_Port_Set();    
     
-	pISR_UART2 = (U32)IrDA_RxOrErr;
+	pISR_UART2 = (uint32_t)IrDA_RxOrErr;
 	Uart_Printf("\nSelect the baud rate\n");	// Select IrDA baud rate
 	Uart_Printf("1)9600    2)19200    3)38400    4)57600    5)115200\n");
 	i = Uart_Getch();

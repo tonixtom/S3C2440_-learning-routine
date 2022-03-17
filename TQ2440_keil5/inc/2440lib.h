@@ -53,7 +53,7 @@ void Timer_Start(int divider);    //Watchdog Timer is used.
 int  Timer_Stop(void);            //Watchdog Timer is used.
 
 void Led_Display(int data);
-void Beep(U32 freq, U32 ms) ;
+void Beep(uint32_t freq, uint32_t ms) ;
 void BUZZER_PWM_Test( void );
 void ChangeMPllValue(int m,int p,int s);
 void ChangeClockDivider(int hdivn_val,int pdivn_val);
@@ -62,8 +62,8 @@ void ChangeUPllValue(int m,int p,int s);
 //void EnterCritical(int *i);
 void Test_IrDA_Tx(void);
 
-void outportw(U16, U32);
-U16 inportw(U32);
+void outportw(uint16_t, uint32_t);
+uint16_t inportw(uint32_t);
 //void ExitCritical(int *i);
 
 #ifdef __cplusplus

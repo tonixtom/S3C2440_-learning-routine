@@ -206,14 +206,14 @@ MMU_InvalidateICache
    mcr p15,0,r0,c7,c5,0
    MOV_PC_LR
 
-;void MMU_InvalidateICacheMVA(U32 mva)
+;void MMU_InvalidateICacheMVA(uint32_t mva)
    EXPORT MMU_InvalidateICacheMVA
 MMU_InvalidateICacheMVA
    ;r0=mva
    mcr p15,0,r0,c7,c5,1
    MOV_PC_LR
 
-;void MMU_PrefetchICacheMVA(U32 mva)
+;void MMU_PrefetchICacheMVA(uint32_t mva)
    EXPORT MMU_PrefetchICacheMVA
 MMU_PrefetchICacheMVA
    ;r0=mva
@@ -226,35 +226,35 @@ MMU_InvalidateDCache
    mcr p15,0,r0,c7,c6,0
    MOV_PC_LR
 
-;void MMU_InvalidateDCacheMVA(U32 mva)
+;void MMU_InvalidateDCacheMVA(uint32_t mva)
    EXPORT MMU_InvalidateDCacheMVA
 MMU_InvalidateDCacheMVA
    ;r0=mva
    mcr p15,0,r0,c7,c6,1
    MOV_PC_LR
 
-;void MMU_CleanDCacheMVA(U32 mva)
+;void MMU_CleanDCacheMVA(uint32_t mva)
    EXPORT MMU_CleanDCacheMVA
 MMU_CleanDCacheMVA
    ;r0=mva
    mcr p15,0,r0,c7,c10,1
    MOV_PC_LR
 
-;void MMU_CleanInvalidateDCacheMVA(U32 mva)
+;void MMU_CleanInvalidateDCacheMVA(uint32_t mva)
    EXPORT MMU_CleanInvalidateDCacheMVA
 MMU_CleanInvalidateDCacheMVA
    ;r0=mva
    mcr p15,0,r0,c7,c14,1
    MOV_PC_LR
 
-;void MMU_CleanDCacheIndex(U32 index)
+;void MMU_CleanDCacheIndex(uint32_t index)
    EXPORT MMU_CleanDCacheIndex
 MMU_CleanDCacheIndex
    ;r0=index
    mcr p15,0,r0,c7,c10,2
    MOV_PC_LR
 
-;void MMU_CleanInvalidateDCacheIndex(U32 index)
+;void MMU_CleanInvalidateDCacheIndex(uint32_t index)
    EXPORT MMU_CleanInvalidateDCacheIndex
 MMU_CleanInvalidateDCacheIndex
    ;r0=index
@@ -282,7 +282,7 @@ MMU_InvalidateITLB
    mcr p15,0,r0,c8,c5,0
    MOV_PC_LR
 
-;void MMU_InvalidateITLBMVA(U32 mva)
+;void MMU_InvalidateITLBMVA(uint32_t mva)
    EXPORT MMU_InvalidateITLBMVA
 MMU_InvalidateITLBMVA
    ;ro=mva
@@ -295,7 +295,7 @@ MMU_InvalidateDTLB
 	mcr p15,0,r0,c8,c6,0
 	MOV_PC_LR
 
-;void MMU_InvalidateDTLBMVA(U32 mva)
+;void MMU_InvalidateDTLBMVA(uint32_t mva)
 	EXPORT MMU_InvalidateDTLBMVA
 MMU_InvalidateDTLBMVA
 	;r0=mva
@@ -305,14 +305,14 @@ MMU_InvalidateDTLBMVA
 ;=================
 ; Cache lock down
 ;=================
-;void MMU_SetDCacheLockdownBase(U32 base)
+;void MMU_SetDCacheLockdownBase(uint32_t base)
    EXPORT MMU_SetDCacheLockdownBase
 MMU_SetDCacheLockdownBase
    ;r0= victim & lockdown base
    mcr p15,0,r0,c9,c0,0
    MOV_PC_LR
 
-;void MMU_SetICacheLockdownBase(U32 base)
+;void MMU_SetICacheLockdownBase(uint32_t base)
    EXPORT MMU_SetICacheLockdownBase
 MMU_SetICacheLockdownBase
    ;r0= victim & lockdown base
@@ -322,14 +322,14 @@ MMU_SetICacheLockdownBase
 ;=================
 ; TLB lock down
 ;=================
-;void MMU_SetDTLBLockdown(U32 baseVictim)
+;void MMU_SetDTLBLockdown(uint32_t baseVictim)
    EXPORT MMU_SetDTLBLockdown
 MMU_SetDTLBLockdown
    ;r0= baseVictim
    mcr p15,0,r0,c10,c0,0
    MOV_PC_LR
 
-;void MMU_SetITLBLockdown(U32 baseVictim)
+;void MMU_SetITLBLockdown(uint32_t baseVictim)
    EXPORT MMU_SetITLBLockdown
 MMU_SetITLBLockdown
    ;r0= baseVictim
@@ -339,7 +339,7 @@ MMU_SetITLBLockdown
 ;============
 ; Process ID
 ;============
-;void MMU_SetProcessId(U32 pid)
+;void MMU_SetProcessId(uint32_t pid)
    EXPORT MMU_SetProcessId
 MMU_SetProcessId
    ;r0= pid

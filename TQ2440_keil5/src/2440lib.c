@@ -22,7 +22,7 @@ void *mallocPt=Image$$RW_RAM1$$Limit;
 //***************************[ SYSTEM ]***************************************************
 void Delay(int time)
 {
-	U32 val = (PCLK>>3)/1000-1;
+	uint32_t val = (PCLK>>3)/1000-1;
 	
 	rTCFG0 &= ~(0xff<<8);
 	rTCFG0 |= 3<<8;			//prescaler = 3+1
@@ -540,7 +540,7 @@ void Led_Display(int data)
 }
 
 //***************************[ BOARD BEEP ]*******************************
-void Buzzer_Freq_Set( U32 freq )
+void Buzzer_Freq_Set( uint32_t freq )
 {
 	rGPBCON &= ~3;			//set GPB0 as tout0, pwm output
 	rGPBCON |= 2;
@@ -564,7 +564,7 @@ void Buzzer_Stop( void )
 }
 
 //***************************[ BOARD BEEP ]*******************************
-void Beep(U32 freq, U32 ms)
+void Beep(uint32_t freq, uint32_t ms)
 {
 	Buzzer_Freq_Set( freq ) ;
 	Delay( ms ) ;
@@ -576,7 +576,7 @@ void Beep(U32 freq, U32 ms)
 ****************************************************************************/
 void BUZZER_PWM_Test( void )
 {
-	U16 freq =800;// lci  1000 ;
+	uint16_t freq =800;// lci  1000 ;
 	
 	Uart_Printf( "\nBUZZER TEST ( PWM Control )\n" );
    	Uart_Printf( "Press +/- to increase/reduce the frequency of BUZZER !\n" ) ;
@@ -586,7 +586,7 @@ void BUZZER_PWM_Test( void )
 
     while( 1 )
     {
-		U8 key = Uart_Getch();
+		uint8_t key = Uart_Getch();
 
 		if( key == '+' )
 		{
